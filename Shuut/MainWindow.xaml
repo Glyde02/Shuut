@@ -10,5 +10,13 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="531,162,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Button x:Name="btnGenerateMap" Content="Generate" HorizontalAlignment="Left" Margin="478,254,0,0" VerticalAlignment="Top" Click="btnGenerateMap_Click" Width="93"/>
         <Button x:Name="btnLoadMap" Content="Load map" HorizontalAlignment="Left" Margin="478,287,0,0" VerticalAlignment="Top" Width="93" Click="btnLoadMap_Click"/>
+        <Button x:Name="btnServer" Content="Server" HorizontalAlignment="Left" Margin="388,172,0,0" VerticalAlignment="Top" Click="btnServer_Click"/>
+        <Button x:Name="btnClient" Content="Client" HorizontalAlignment="Left" Margin="388,217,0,0" VerticalAlignment="Top" Click="btnClient_Click"/>
+        <TextBlock x:Name="t1" HorizontalAlignment="Left" Margin="224,87,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="t2" HorizontalAlignment="Left" Margin="249,128,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="t3" HorizontalAlignment="Left" Margin="273,182,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="t4" HorizontalAlignment="Left" Margin="249,287,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button Content="send" HorizontalAlignment="Left" Margin="400,297,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button Content="get" HorizontalAlignment="Left" Margin="415,353,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
     </Grid>
 </Window>

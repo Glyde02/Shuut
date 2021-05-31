@@ -35,6 +35,8 @@ namespace Shuut
 
         public int width = 800, height = 600;
         public int windowWidth = 1000, windowHeight = 800;
+        public double pX = 15, pY=10, angle=0;
+
 
         public void GetMap(string name)
         {
@@ -50,7 +52,7 @@ namespace Shuut
                 //this.width = 800;
                 //this.height = 600;
                 F.Close();
-
+                //map[(int)pX * width + (int)pY] = 2;
 
             }
             catch

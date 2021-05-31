@@ -27,6 +27,8 @@ namespace Shuut
         private World world = new World();
         private Camera camera = new Camera();
         private Map map = new Map();
+        private Weapon weapon = new Weapon();
+        private TCP_Connection connection;
 
         public MainWindow()
         {
@@ -72,45 +74,68 @@ namespace Shuut
 
 
             ////window.Draw(shape);
-            
 
+            bool isPressed = false;
+            if (connection is TCP_Server)
+            {
+                (connection as TCP_Server).window = window;
+            }
 
             while (window.IsOpen)
             {
                 window.DispatchEvents();
 
+                if (connection is TCP_Server)
+                {
 
-                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
-                {
-                    camera.Left(world);
-                }
-                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
-                {
-                    camera.Right(world);
-                }
-                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
-                {
-                    camera.Forward(world);
-                }
-                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
-                {
-                    camera.Backward(world);
-                }
-                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.N))
-                {
-                    camera.IncAngle();
-                }
-                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.M))
-                {
-                    camera.DecAngle();
-                }
+                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
+                    {
+                        isPressed = true;
+                        camera.Left(world);
 
-
+                    }
+                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
+                    {
+                        isPressed = true;
+                        camera.Right(world);
+                    }
+                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
+                    {
+                        isPressed = true;
+                        camera.Forward(world);
+                    }
+                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
+                    {
+                        isPressed = true;
+                        camera.Backward(world);
+                    }
+                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.N))
+                    {
+                        isPressed = true;
+                        camera.IncAngle();
+                    }
+                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.M))
+                    {
+                        isPressed = true;
+                        camera.DecAngle();
+                    }
+                }
+                else
+                    isPressed = true;
+                if (isPressed)
+                {
+                    window.SetTitle(camera.pX.ToString() + ":" + camera.pY.ToString());
+                    connection.Send(connection.Encrypt(new double[4] { camera.pX, camera.pY, camera.angle, 0 }));
+                    isPressed = false;
+                    
+                }
+                
 
                 window.Clear(Color.Black);
                 camera.Round(window, world);
                 //map.ShowMap(world, camera, window);
 
+                weapon.ShowWeapon(window);
 
                 //window.Clear(Color.Black);
                 ////window.Draw(shape);
@@ -129,6 +154,39 @@ namespace Shuut
         private void btnLoadMap_Click(object sender, RoutedEventArgs e)
         {
             world.GetMap("test.txt");
+        }
+
+        private void btnServer_Click(object sender, RoutedEventArgs e)
+        {
+            connection = new TCP_Server();
+            connection.Init(world);
+            
+        }
+        private void btnClient_Click(object sender, RoutedEventArgs e)
+        {
+            connection = new TCP_Client();
+            connection.Init(world);
+            camera.pX = 20;
+            camera.angle = Math.PI;
+            //connection.Send(connection.Encrypt(new double[4] { 20, 20, 0, 0 }));
+        }
+
+
+
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            connection.Send(connection.Encrypt(new double[4] { 2.3, 5, 6, 7.89}));
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            double[] str = connection.Decrypt(connection.Get());
+            t1.Text = str[0].ToString();
+            t1.Text = str[1].ToString();
+            t1.Text = str[2].ToString();
+            t1.Text = str[3].ToString();
         }
     }
 
