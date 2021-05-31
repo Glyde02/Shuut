@@ -15,42 +15,34 @@ using SFML;
 using SFML.Graphics;
 using SFML.Audio;
 using SFML.System;
-
-
+using SFML.Window;
 
 namespace Shuut
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window 
     {
+        private World world = new World();
+        private Camera camera = new Camera();
+        private Map map = new Map();
+
         public MainWindow()
         {
             InitializeComponent();
 
-            
+
+
         }
 
 
-        private static SoundBuffer GenerateSineWave(double frequency, double volume, int seconds)
-        {
-            uint sampleRate = 44100;
-            var samples = new short[seconds * sampleRate];
-
-            for (int i = 0; i < samples.Length; i++)
-                samples[i] = (short)(Math.Sin(frequency * (2 * Math.PI) * i / sampleRate) * volume * short.MaxValue);
-
-            return new SoundBuffer(samples, 1, sampleRate);
-        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            World world = new World();
-            Camera camera = new Camera();
-            Map map = new Map();
-            
+
+
 
             //camera.Round(world);
 
@@ -63,8 +55,16 @@ namespace Shuut
             //};
 
             //var sound = new Sound(GenerateSineWave(frequency: 440.0, volume: .25, seconds: 1));
+            ContextSettings settings = new ContextSettings();
 
-            var window = new RenderWindow(new SFML.Window.VideoMode((uint)world.windowWidth, (uint)world.windowHeight), "SFML running in .NET Core");
+            settings.AntialiasingLevel = 8;
+
+            //sf::RenderWindow window(sf::VideoMode(800, 600), "SFML shapes", sf::Style::Default, settings);
+            
+
+
+
+            var window = new RenderWindow(new SFML.Window.VideoMode((uint)world.windowWidth, (uint)world.windowHeight), "SFML running in .NET Core", Styles.Default, settings);
 
             window.Closed += (_, __) => window.Close();
 
@@ -80,27 +80,27 @@ namespace Shuut
                 window.DispatchEvents();
 
 
-                if (Keyboard.IsKeyDown(Key.A))
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
                 {
                     camera.Left(world);
                 }
-                if (Keyboard.IsKeyDown(Key.D))
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
                 {
                     camera.Right(world);
                 }
-                if (Keyboard.IsKeyDown(Key.W))
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
                 {
                     camera.Forward(world);
                 }
-                if (Keyboard.IsKeyDown(Key.S))
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
                 {
                     camera.Backward(world);
                 }
-                if (Keyboard.IsKeyDown(Key.N))
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.N))
                 {
                     camera.IncAngle();
                 }
-                if (Keyboard.IsKeyDown(Key.M))
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.M))
                 {
                     camera.DecAngle();
                 }
@@ -109,15 +109,26 @@ namespace Shuut
 
                 window.Clear(Color.Black);
                 camera.Round(window, world);
-                map.ShowMap(world, camera, window);
+                //map.ShowMap(world, camera, window);
 
 
                 //window.Clear(Color.Black);
                 ////window.Draw(shape);
                 //camera.Round(window, world);
                 window.Display();
-                System.Threading.Thread.Sleep(50);
+                //System.Threading.Thread.Sleep(50);
             }
+        }
+
+        private void btnGenerateMap_Click(object sender, RoutedEventArgs e)
+        {
+            MapGenerator newMap = new MapGenerator();
+            newMap.Generate(200, 200);
+        }
+
+        private void btnLoadMap_Click(object sender, RoutedEventArgs e)
+        {
+            world.GetMap("test.txt");
         }
     }
 

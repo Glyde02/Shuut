@@ -8,5 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid x:Name="Window">
         <Button Content="Button" HorizontalAlignment="Left" Margin="531,162,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button x:Name="btnGenerateMap" Content="Generate" HorizontalAlignment="Left" Margin="478,254,0,0" VerticalAlignment="Top" Click="btnGenerateMap_Click" Width="93"/>
+        <Button x:Name="btnLoadMap" Content="Load map" HorizontalAlignment="Left" Margin="478,287,0,0" VerticalAlignment="Top" Width="93" Click="btnLoadMap_Click"/>
     </Grid>
 </Window>

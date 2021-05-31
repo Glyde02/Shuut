@@ -34,14 +34,14 @@ namespace Shuut
             RectangleShape player = new RectangleShape(new SFML.System.Vector2f(size, size))
             {
                 FillColor = Color.Red,
-                Position = new SFML.System.Vector2f(camera.pY * size, camera.pX * size)
+                Position = new SFML.System.Vector2f((float)(camera.pY * size), (float)(camera.pX * size))
             };
             window.Draw(player);
 
             for (int i = 0; i < world.height; i++)
                 for (int j = 0; j < world.width; j++)
                 {
-                    if (world.map[i,j] == 1)
+                    if (world.map[i * world.width + j] == 1)
                     {
                         RectangleShape dot = new RectangleShape(new SFML.System.Vector2f(size, size))
                         {
@@ -56,6 +56,8 @@ namespace Shuut
 
 
         }
+
+
 
     }
 }
