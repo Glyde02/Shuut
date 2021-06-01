@@ -13,7 +13,7 @@ namespace Shuut
         public double pX = 10, pY = 10;
         public double angle = 0;
         private double FOV = Math.PI / 3;
-        public int deph = 100;
+        public int deph = 200;
         private double raySpeed = 0.05;
         private int numTexture = 1;
         private int numSky = 1;
@@ -42,23 +42,8 @@ namespace Shuut
 
 
 
-        public void Round(RenderWindow window, World world)
+        public void View(RenderWindow window, World world)
         {
-
-
-
-            //var line = new RectangleShape(new Vector2f(1, 15));
-            //line.Position = new Vector2f(0, 0);
-
-
-            //window.Draw(line);
-
-
-            //var secline = new RectangleShape(new Vector2f(1, 30));
-            //secline.Position = new Vector2f(30, 0);
-
-            //window.Draw(secline);
-
             numTexture = 0;
 
             angle = angle % (Math.PI * 2);
@@ -167,8 +152,6 @@ namespace Shuut
                     //int floor = world.windowHeight - wall;
 
 
-
-
                     int wall = (int)((world.windowHeight / 2) * (1 - 3 / dist));
                     int floor = (int)((world.windowHeight / 2) * (1 + 3 / dist));
 
@@ -192,74 +175,43 @@ namespace Shuut
                     else
                     {
 
-
-                        ////texture.
-
-
                         if (isBound)
                         {
-                            numTexture = 1;
+                            numTexture = 0;
                         }
-
                         if (numTexture >= 1000)
                         {
-                            numTexture = 1;
+                            numTexture = 0;
                         }
 
 
                         var line = new RectangleShape(new Vector2f(1, floor - wall))
                         {
                             Position = new Vector2f(x, wall),
+
+                            //Without texture. White --> Black
                             //FillColor = !isBound ? new Color(255, 255, 255, (byte)(255 - (255 * dist / deph))) :
                             //                    new Color(255, 255, 255, (byte)(255 * dist / deph)),
 
-
-
-                            //FillColor = new Color(255, 255, 255, (byte)(255 - (255 * dist / deph)))
                             Texture = textu_wall[numTexture]
                         };
-                        //line.Position = new Vector2f(x, wall);
-
-                        //if (isBound)
-                        //{
-                        //    var block = new ConvexShape(4);
-                        //    //block.Texture = texture;
-                        //    block.SetPoint(0, new Vector2f(x1, wl1));
-                        //    block.SetPoint(1, new Vector2f(x, wall));
-                        //    block.SetPoint(2, new Vector2f(x, floor));
-                        //    block.SetPoint(3, new Vector2f(x1, fl1));
-                        //    x1 = x;
-                        //    wl1 = wall;
-                        //    fl1 = floor;
-                        //    isBound = false;
-                        //    window.Draw(block);
-                        //}
-
-
                         window.Draw(line);
-                        //if ((int)dist == 0)
-                        //{
-                        //    numTexture++;
-                        //}
-                        //else
-                        //{
 
-                        //}
+                        var fog = new RectangleShape(new Vector2f(1, floor - wall))
+                        {
+                            Position = new Vector2f(x, wall),
+                            FillColor = new Color(255, 255, 255, (byte)(230 * dist / deph))
+                        };
+                        window.Draw(fog);
+
+
+
                         numTexture += (int)((dist) / 2);
                         //numTexture++;
                         isBound = false;
                     }
                 }
-                //window.SetTitle(angle.ToString());
-
-
-
-
-
             }
-
-
-
         }
 
         public void Left(World world)
@@ -287,13 +239,6 @@ namespace Shuut
 
                 pY -= (Math.Cos(Math.PI - angle) * 0.5);
             }
-
-            //if (world.map[pX, pY] == 1)
-            //{
-            //    pY += (int)(Math.Sin(angle) * 2);
-
-            //    pX += (int)(Math.Cos(angle) * 2);
-            //}
         }
         public void Forward(World world)
         {
@@ -307,8 +252,6 @@ namespace Shuut
 
                 pY -= (Math.Sin(angle) * 0.5);
             }
-
-            //pY++;
         }
         public void Backward(World world)
         {
@@ -340,7 +283,17 @@ namespace Shuut
             }
         }
 
+        public bool CheckShot(World world)
+        {
+            return true;
+        }
 
+
+        public void NewLocation()
+        {
+            pX += 1;
+            pY += 1;
+        }
 
     }
 

@@ -19,8 +19,10 @@ namespace Shuut
         {
             Objects elem = new Objects();
 
-            RenderWindow window = new RenderWindow(new SFML.Window.VideoMode((uint)800, (uint)600), "Map generator");
+            RenderWindow window = new RenderWindow(new SFML.Window.VideoMode((uint)w, (uint)h), "Map generator");
             window.Closed += (_, __) => window.Close();
+
+
 
             while (window.IsOpen)
             {
@@ -29,7 +31,7 @@ namespace Shuut
 
                 if (Mouse.IsButtonPressed(Mouse.Button.Left))
                 {
-                    pixels.Add(elem.Pixel(Mouse.GetPosition(window).X, Mouse.GetPosition(window).Y, Color.Green));
+                    pixels.Add(elem.Pixel(Mouse.GetPosition(window).X, Mouse.GetPosition(window).Y, 5, Color.Green));
                 }
 
                 foreach (RectangleShape dot in pixels)
@@ -44,16 +46,51 @@ namespace Shuut
 
             }
 
-            byte[] map = new byte[800 * 600];
+
+
+            byte[] map = new byte[w * h];
             foreach (RectangleShape dot in pixels)
             {
-                map[(int)(dot.Position.X * 800 + dot.Position.Y)] = 1;
+                int index = (int)(dot.Position.X * (w) + dot.Position.Y);
+                map[index] = 1;
+                //map[index + 1] = 1;
+                //map[index + 2] = 1;
+                //index += w;
+                //map[index] = 1;
+                //map[index + 1] = 1;
+                //map[index + 2] = 1;
+                //index += w;
+                //map[index] = 1;
+                //map[index + 1] = 1;
+                //map[index + 2] = 1;
             }
+
+            for (int i = 0; i < w; i++)
+            {
+                map[0 * 0 + i] = 1;
+                map[h * (w-1) + i] = 1;
+            }
+            for (int j = 0; j < h; j++)
+            {
+                map[j * w + 0] = 1;
+                map[j * w + (w-1)] = 1;
+            }
+
+
+            //for (int j = 0; j < h; j++)
+            //    {
+
+            //        map[]
+            //        pixels.Add(elem.Pixel(i, 0, 1, Color.Green));
+            //        pixels.Add(elem.Pixel(i, h - 1, 1, Color.Green));
+            //        pixels.Add(elem.Pixel(0, j, 1, Color.Green));
+            //        pixels.Add(elem.Pixel(w - 1, j, 1, Color.Green));
+            //    }
 
             FileStream F = new FileStream("test.txt", FileMode.OpenOrCreate,
                         FileAccess.ReadWrite);
 
-            F.Write(map, 0, 800 * 600);
+            F.Write(map, 0, w * h);
             F.Close();
 
 

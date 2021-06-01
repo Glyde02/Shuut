@@ -12,6 +12,7 @@ namespace Shuut
     class TCP_Server : TCP_Connection
     {
         private World world;
+        private Camera camera;
 
         private Socket socket;
         private string ipAdress = "127.0.0.1";
@@ -38,12 +39,15 @@ namespace Shuut
                 {
                     world.map[(int)world.pX * world.width + (int)world.pY] = 0;
                     double[] data = this.Decrypt(inputData);
+                    if (data[3] != 0)
+                    {
+                        camera.NewLocation();
+                    }
                     world.pX = data[0];
                     world.pY = data[1];
                     world.angle = data[2];
                     world.map[(int)(world.pX) * world.width + (int)world.pY] = 2;
-                    window.SetTitle(world.pX.ToString() + ":" + world.pY.ToString());
-                    //SendMessageToAll(clientSocket);
+                    SendMessageToAll(clientSocket);
                 }
                 
             }
@@ -60,9 +64,10 @@ namespace Shuut
             }
         }
 
-        public override void Init(World world)
+        public override void Init(World world, Camera camera)
         {
             this.world = world;
+            this.camera = camera;
 
             IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(ipAdress), port);
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

@@ -11,11 +11,11 @@ namespace Shuut
     class Objects
     {
 
-        public RectangleShape Pixel(int x, int y, Color color)
+        public RectangleShape Pixel(int x, int y, int size, Color color)
         {
             RectangleShape pixel = new RectangleShape()
             {
-                Size = new Vector2f(3, 3),
+                Size = new Vector2f(size, size),
                 Position = new Vector2f(x, y),
                 FillColor = color
             };

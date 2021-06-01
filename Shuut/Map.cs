@@ -9,13 +9,13 @@ namespace Shuut
 {
     class Map
     {
-        private int size = 5;
+        private int size = 2;
         private int width = 125, height = 60;
 
 
         public void ShowMap(World world, Camera camera, RenderWindow window)
         {
-            RectangleShape map = new RectangleShape(new SFML.System.Vector2f(width, height))
+            RectangleShape map = new RectangleShape(new SFML.System.Vector2f(world.width, world.height))
             {
                 FillColor = Color.White
             };
@@ -31,10 +31,10 @@ namespace Shuut
             //};
             //window.Draw(circle);
 
-            RectangleShape player = new RectangleShape(new SFML.System.Vector2f(size, size))
+            RectangleShape player = new RectangleShape(new SFML.System.Vector2f(5, 5))
             {
                 FillColor = Color.Red,
-                Position = new SFML.System.Vector2f((float)(camera.pY * size), (float)(camera.pX * size))
+                Position = new SFML.System.Vector2f((float)(camera.pY), (float)(camera.pX))
             };
             window.Draw(player);
 
@@ -46,7 +46,7 @@ namespace Shuut
                         RectangleShape dot = new RectangleShape(new SFML.System.Vector2f(size, size))
                         {
                             FillColor = Color.Blue,
-                            Position = new SFML.System.Vector2f(j * size, i * size)
+                            Position = new SFML.System.Vector2f(j, i)
                         };
                         window.Draw(dot);
                     }

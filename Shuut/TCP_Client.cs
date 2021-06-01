@@ -14,6 +14,7 @@ namespace Shuut
         static int port = 433;
         private Socket socket;
         private World world;
+        private Camera camera;    
 
         byte[] inputData = new byte[4*8];
 
@@ -28,6 +29,10 @@ namespace Shuut
 
                 world.map[(int)world.pX * world.width + (int)world.pY] = 0;
                 double[] data = this.Decrypt(inputData);
+                if (data[3] != 0)
+                {
+                    camera.NewLocation();
+                }
                 world.pX = data[0];
                 world.pY = data[1];
                 world.angle = data[2];
@@ -41,9 +46,10 @@ namespace Shuut
             socket.Send(message);
         }
 
-        public override void Init(World world)
+        public override void Init(World world, Camera camera)
         {
             this.world = world;
+            this.camera = camera;
 
             IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(ipAdress), port);
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

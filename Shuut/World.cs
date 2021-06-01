@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Shuut
 {
@@ -30,16 +31,20 @@ namespace Shuut
         //                                    1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         //                                    1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         //                                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 };
-        public byte[] map = new byte[800*600];
 
 
-        public int width = 800, height = 600;
+
+        public int width, height;
+        public byte[] map;
         public int windowWidth = 1000, windowHeight = 800;
         public double pX = 15, pY=10, angle=0;
 
 
-        public void GetMap(string name)
+        public void GetMap(string name, int w, int h)
         {
+            this.width = w;
+            this.height = h;
+            this.map = new byte[w * h];
             // Создание экземпляра класса StreamReader для чтения из файла.
             // Оператор using обрамляет код, где используется StreamReader.
             try
@@ -48,7 +53,7 @@ namespace Shuut
 
 
                 FileStream F = new FileStream("test.txt", FileMode.Open, FileAccess.ReadWrite);
-                F.Read(map, 0, 800 * 600);
+                F.Read(map, 0, w * h);
                 //this.width = 800;
                 //this.height = 600;
                 F.Close();
@@ -57,7 +62,7 @@ namespace Shuut
             }
             catch
             {
-
+                MessageBox.Show("Map loading error!");
             }
 
         }
