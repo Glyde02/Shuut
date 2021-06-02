@@ -83,3 +83,6 @@ D:\Shuut\Shuut\Shuut\obj\Debug\net5.0-windows\Shuut.dll
 D:\Shuut\Shuut\Shuut\obj\Debug\net5.0-windows\ref\Shuut.dll
 D:\Shuut\Shuut\Shuut\obj\Debug\net5.0-windows\Shuut.pdb
 D:\Shuut\Shuut\Shuut\obj\Debug\net5.0-windows\Shuut.genruntimeconfig.cache
+D:\Shuut\Shuut\Shuut\bin\Debug\net5.0-windows\MaterialDesignColors.dll
+D:\Shuut\Shuut\Shuut\bin\Debug\net5.0-windows\MaterialDesignThemes.Wpf.dll
+D:\Shuut\Shuut\Shuut\obj\Debug\net5.0-windows\App.baml

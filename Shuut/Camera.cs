@@ -23,23 +23,20 @@ namespace Shuut
         Image img_sky = new Image("sky2.png");
         Texture pll = new Texture("player2.png");
 
-        public Camera()
+        public void LoadTexture()
         {
-
             textu_wall = new Texture[1000];
             for (int i = 0; i < 1000; i++)
             {
                 textu_wall[i] = new Texture(img_wall, new IntRect(i, 0, 1, 800));
             }
 
-            //textu_sky = new Texture[6000];
-            //for (int i = 0; i < 6000; i++)
-            //{
-            //    textu_sky[i] = new Texture(img_sky, new IntRect(i, 0, 1, 600));
-            //}
+            textu_sky = new Texture[6000];
+            for (int i = 0; i < 6000; i++)
+            {
+                textu_sky[i] = new Texture(img_sky, new IntRect(i, 0, 1, 600));
+            }
         }
-
-
 
 
         public void View(RenderWindow window, World world)
@@ -57,17 +54,18 @@ namespace Shuut
 
             for (int x = 0; x < world.windowWidth; x++)
             {
-                //var skyLine = new RectangleShape(new Vector2f(1, world.windowHeight / 2))
-                //{
-                //    Position = new Vector2f(x, 0),
-                //    Texture = textu_sky[(int)numSky]
-                //};
-                //numSky++;
-                //if (numSky >= 6000)
-                //{
-                //    numSky = 0;
-                //}
-                //window.Draw(skyLine);
+                //Sky
+                var skyLine = new RectangleShape(new Vector2f(1, world.windowHeight / 2))
+                {
+                    Position = new Vector2f(x, 0),
+                    Texture = textu_sky[(int)numSky]
+                };
+                numSky++;
+                if (numSky >= 6000)
+                {
+                    numSky = 0;
+                }
+                window.Draw(skyLine);
 
 
                 double rayAngle = angle + FOV / 2 - (x * FOV / world.windowWidth);
@@ -101,7 +99,7 @@ namespace Shuut
                         {
                             hit = true;
                             player = true;
-                            
+
 
                         }
                         else
@@ -160,13 +158,7 @@ namespace Shuut
                         var Player = new RectangleShape(new Vector2f(1, floor - wall))
                         {
                             Position = new Vector2f(x, wall),
-                            //FillColor = !isBound ? new Color(255, 255, 255, (byte)(255 - (255 * dist / deph))) :
-                            //                    new Color(255, 255, 255, (byte)(255 * dist / deph)),
-
                             Texture = pll
-                            //FillColor = Color.Green
-                            //FillColor = new Color(255, 255, 255, (byte)(255 - (255 * dist / deph)))
-
                         };
 
                         window.Draw(Player);
@@ -177,11 +169,11 @@ namespace Shuut
 
                         if (isBound)
                         {
-                            numTexture = 0;
+                            numTexture = 1;
                         }
                         if (numTexture >= 1000)
                         {
-                            numTexture = 0;
+                            numTexture = 1;
                         }
 
 
@@ -197,12 +189,7 @@ namespace Shuut
                         };
                         window.Draw(line);
 
-                        var fog = new RectangleShape(new Vector2f(1, floor - wall))
-                        {
-                            Position = new Vector2f(x, wall),
-                            FillColor = new Color(255, 255, 255, (byte)(230 * dist / deph))
-                        };
-                        window.Draw(fog);
+
 
 
 
@@ -210,6 +197,13 @@ namespace Shuut
                         //numTexture++;
                         isBound = false;
                     }
+
+                    var fog = new RectangleShape(new Vector2f(1, floor - wall))
+                    {
+                        Position = new Vector2f(x, wall),
+                        FillColor = new Color(255, 255, 255, (byte)(230 * dist / deph))
+                    };
+                    window.Draw(fog);
                 }
             }
         }
@@ -285,7 +279,37 @@ namespace Shuut
 
         public bool CheckShot(World world)
         {
-            return true;
+            double rayAngle = angle + FOV / 2 - ((world.windowWidth / 2) * FOV / world.windowWidth);
+            //double rayAngle = angle;
+            double rayX = Math.Cos(rayAngle);
+            double rayY = Math.Sin(rayAngle);
+
+            double dist = 0;
+            bool hit = false;
+
+            double tx;
+            double ty;
+
+
+            while (!hit && dist < deph)
+            {
+                dist += raySpeed;
+
+                tx = (pX + rayX * dist);
+                ty = (pY + rayY * dist);
+
+
+                if (world.map[(int)((int)tx * world.width + (int)ty)] == 1)
+                {
+                    dist = deph;
+                }
+                else if (world.map[(int)((int)tx * world.width + (int)ty)] == 2)
+                {
+                    hit = true;
+                }
+
+            }
+            return hit ? true : false;
         }
 
 

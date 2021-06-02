@@ -1,17 +1,52 @@
-﻿<Window x:Class="Shuut.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shuut"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="Shuut.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="Window">
-        <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="531,162,0,0" VerticalAlignment="Top" Click="Button_Click" IsEnabled="False"/>
-        <Button x:Name="btnGenerateMap" Content="Generate" HorizontalAlignment="Left" Margin="478,254,0,0" VerticalAlignment="Top" Click="btnGenerateMap_Click" Width="93"/>
-        <Button x:Name="btnLoadMap" Content="Load map" HorizontalAlignment="Left" Margin="478,287,0,0" VerticalAlignment="Top" Width="93" Click="btnLoadMap_Click"/>
-        <Button x:Name="btnServer" Content="Server" HorizontalAlignment="Left" Margin="70,167,0,0" VerticalAlignment="Top" Click="btnServer_Click"/>
-        <Button x:Name="btnClient" Content="Client" HorizontalAlignment="Left" Margin="70,202,0,0" VerticalAlignment="Top" Click="btnClient_Click" Width="37"/>
-        <CheckBox x:Name="checkSingle" Content="CheckBox" HorizontalAlignment="Left" Margin="201,111,0,0" VerticalAlignment="Top"/>
+        Title="MainWindow" Height="588" Width="294"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+         TextElement.FontWeight="Regular"
+         TextElement.FontSize="13"
+         TextOptions.TextFormattingMode="Ideal"
+         TextOptions.TextRenderingMode="Auto"
+         Background="{DynamicResource MaterialDesignPaper}"
+         FontFamily="{DynamicResource MaterialDesignFont}" ResizeMode="CanMinimize">
+    <Grid x:Name="Window" Margin="0,0,0,-6">
+        <TextBlock
+          Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+          Text="Multiplayer" Margin="66,33,0,0" HorizontalAlignment="Left" Width="134" Height="32" VerticalAlignment="Top" />
+        <TextBlock x:Name="txtTexture"
+          Style="{StaticResource MaterialDesignBody2TextBlock}"
+          Text="Loading succesed" Margin="0,228,-107,0" Height="547" VerticalAlignment="Top" HorizontalAlignment="Right" Width="302" Visibility="Hidden" />
+        <ToggleButton x:Name="checkSingle"
+          Style="{StaticResource MaterialDesignSwitchToggleButton}"
+          ToolTip="MaterialDesignSwitchToggleButton"
+          IsChecked="True" Margin="197,31,0,0" HorizontalAlignment="Left" Width="38" Height="31" VerticalAlignment="Top" />
+        <ProgressBar x:Name="prgBarTexture"
+  IsIndeterminate="True" Visibility="Hidden" />
+        <ProgressBar
+          Style="{StaticResource MaterialDesignCircularProgressBar}"
+          Value="0"
+          IsIndeterminate="True" HorizontalAlignment="Left" Margin="215,412,0,0" Width="20" Height="20" VerticalAlignment="Top" />
+        <ProgressBar x:Name="prgBarServer"
+          Style="{StaticResource MaterialDesignCircularProgressBar}"
+          Value="0"
+          IsIndeterminate="True" HorizontalAlignment="Left" Margin="215,364,0,0" Width="20" Height="20" VerticalAlignment="Top" />
+        <TextBlock
+  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+  Text="Start game as" Margin="101,339,0,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108" />
+
+        <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="66,495,0,0" VerticalAlignment="Top" Click="Button_Click" IsEnabled="False" Width="170"/>
+        <Button x:Name="btnGenerateMap" Content="Generate map" HorizontalAlignment="Left" Margin="66,89,0,0" VerticalAlignment="Top" Click="btnGenerateMap_Click" Width="170"/>
+        <Button x:Name="btnLoadMap" Content="Load map" HorizontalAlignment="Left" Margin="66,140,0,0" VerticalAlignment="Top" Width="170" Click="btnLoadMap_Click"/>
+        <Button x:Name="btnServer" Content="Server" Margin="66,358,0,0" VerticalAlignment="Top" Click="btnServer_Click" HorizontalAlignment="Left" Width="134"/>
+        <Button x:Name="btnClient" Content="Client" Margin="66,406,0,0" VerticalAlignment="Top" Click="btnClient_Click" Cursor="Hand" HorizontalAlignment="Left" Width="134"/>
+        <Button x:Name="btnLoadTexture" Content="Load texture" HorizontalAlignment="Left" Margin="66,191,0,0" VerticalAlignment="Top" Width="170" Cursor="Hand" Click="btnLoadTexture_Click"/>
+        <materialDesign:PackIcon Kind="Connection" Margin="16,356,0,0" Height="35" Width="30" />
+        <materialDesign:PackIcon Kind="AccountMultiple" Width="30" Height="30" Margin="16,32,0,0" />
+        <materialDesign:PackIcon Kind="EarthBox" Width="30" Height="31" Margin="16,89,0,0" />
     </Grid>
 </Window>

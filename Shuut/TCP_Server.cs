@@ -22,7 +22,7 @@ namespace Shuut
         private Socket clientSocket;
         public Window window;
 
-        byte[] inputData;
+        byte[] inputData = new byte[8 * 4];
 
 
         public override byte[] Get()
@@ -31,7 +31,7 @@ namespace Shuut
             {
                 StringBuilder inputMessage = new StringBuilder();
                 int bytesRead = 0;
-                inputData = new byte[8 * 4];
+                
 
                 bytesRead = clientSocket.Receive(inputData);
 
@@ -47,7 +47,7 @@ namespace Shuut
                     world.pY = data[1];
                     world.angle = data[2];
                     world.map[(int)(world.pX) * world.width + (int)world.pY] = 2;
-                    SendMessageToAll(clientSocket);
+                    //SendMessageToAll(clientSocket);
                 }
                 
             }

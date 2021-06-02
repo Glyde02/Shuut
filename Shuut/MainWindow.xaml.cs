@@ -15,6 +15,7 @@ using SFML.Graphics;
 using SFML.Audio;
 using SFML.System;
 using SFML.Window;
+using System.Threading;
 
 namespace Shuut
 {
@@ -78,10 +79,10 @@ namespace Shuut
             //sound.Play();
 
             bool isShot = false;
-            if (connection is TCP_Server)
-            {
-                (connection as TCP_Server).window = window;
-            }
+            //if (connection is TCP_Server)
+            //{
+            //    (connection as TCP_Server).window = window;
+            //}
 
 
             while (window.IsOpen)
@@ -128,7 +129,7 @@ namespace Shuut
                 }
 
 
-                if ((bool)checkSingle.IsChecked)
+                if (!(bool)checkSingle.IsChecked)
                 {
 
                 }
@@ -222,6 +223,39 @@ namespace Shuut
             //connection.Send(connection.Encrypt(new double[4] { 20, 20, 0, 0 }));
         }
 
+        private void btnLoadTexture_Click(object sender, RoutedEventArgs e)
+        {
+
+
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                //this will call in background thread
+                showElement(prgBarTexture);
+                camera.LoadTexture();
+                hideElement(prgBarTexture);
+                showElement(txtTexture);
+                Thread.Sleep(3000);
+                hideElement(txtTexture);
+
+            });
+
+            
+
+        }
+
+        private void hideElement(UIElement obj)
+        {
+            this.Dispatcher.Invoke((Action)(() => {
+                obj.Visibility = Visibility.Hidden;
+            }));
+        }
+        private void showElement(UIElement obj)
+        {
+            this.Dispatcher.Invoke((Action)(() => {
+                obj.Visibility = Visibility.Visible;
+            }));
+        }
     }
 
 }
