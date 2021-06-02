@@ -73,16 +73,12 @@ namespace Shuut
             //window.KeyPressed += OnKeyPressed;
             window.KeyReleased += OnKeyReleased;
             window.LostFocus += LostFocus_;
-            window.GainedFocus += GainedFocus_;
-            
+            window.GainedFocus += GainedFocus_;          
 
             //sound.Play();
 
             bool isShot = false;
-            //if (connection is TCP_Server)
-            //{
-            //    (connection as TCP_Server).window = window;
-            //}
+            bool firsAnimation = false;
 
 
             while (window.IsOpen)
@@ -92,35 +88,36 @@ namespace Shuut
 
                 if (isFocus)
                 {
-                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
+                    if (pressedLeft())
                     {
                         camera.Left(world);
 
                     }
-                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
+                    if (pressedRight())
                     {
                         camera.Right(world);
                     }
-                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
+                    if (pressedForward())
                     {
                         camera.Forward(world);
                     }
-                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
+                    if (pressedBackward())
                     {
                         camera.Backward(world);
                     }
-                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.N))
+                    if (pressedInc())
                     {
                         camera.IncAngle();
                     }
-                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.M))
+                    if (pressedDec())
                     {
                         camera.DecAngle();
                     }
-                    if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.Space) &&
+                    if (pressedShot() &&
                         keysArePressed[Keyboard.Key.Space] == false)
                     {
                         keysArePressed[Keyboard.Key.Space] = true;
+                        firsAnimation = true;
                         if (camera.CheckShot(world))
                         {
                             isShot = true;
@@ -142,16 +139,76 @@ namespace Shuut
                 }
                 isShot = false;
 
-                
+                //Joystick
+                //if (Joystick.Count > 0)
+                //    window.SetTitle("This!");
+                //window.SetTitle(Joystick.GetAxisPosition(1, Joystick.Axis.X).ToString());
+
 
                 window.Clear(Color.Black);
                 camera.View(window, world);
+
+                if (keysArePressed[Keyboard.Key.Space] == true && firsAnimation)
+                {
+                    weapon.ShowFire(window);
+                    firsAnimation = false;
+                }
 
                 map.ShowMap(world, camera, window);
                 weapon.ShowWeapon(window);
 
                 window.Display();
             }
+        }
+
+        private bool pressedLeft()
+        {
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
+                return true;
+            else
+                return false;
+        }
+        private bool pressedRight()
+        {
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
+                return true;
+            else
+                return false;
+        }
+        private bool pressedForward()
+        {
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
+                return true;
+            else
+                return false;
+        }
+        private bool pressedBackward()
+        {
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
+                return true;
+            else
+                return false;
+        }
+        private bool pressedInc()
+        {
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.N))
+                return true;
+            else
+                return false;
+        }
+        private bool pressedDec()
+        {
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.M))
+                return true;
+            else
+                return false;
+        }
+        private bool pressedShot()
+        {
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.Space))
+                return true;
+            else
+                return false;
         }
 
         private void GainedFocus_(object sender, EventArgs e)
@@ -225,14 +282,18 @@ namespace Shuut
         }
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
-            
-            connection = new TCP_Client(txtIpClient.Text, prgBarClient, txtConnectInfo);
-            connection.Init(world, camera);
-            camera.pX = 20;
-            camera.angle = Math.PI;
-
-            
-
+            try
+            {
+                prgBarClient.Visibility = Visibility.Visible;
+                connection = new TCP_Client(txtIpClient.Text, prgBarClient, txtConnectInfo);
+                connection.Init(world, camera);
+                camera.pX = 20;
+                camera.angle = Math.PI;
+            }
+            catch
+            {
+                MessageBox.Show("Error IP!");
+            }
             //connection.Send(connection.Encrypt(new double[4] { 20, 20, 0, 0 }));
         }
 
@@ -243,7 +304,6 @@ namespace Shuut
 
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                //this will call in background thread
                 showElement(prgBarTexture);
                 camera.LoadTexture();
                 hideElement(prgBarTexture);

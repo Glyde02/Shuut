@@ -50,6 +50,25 @@ namespace Shuut
             if (numSky < 0)
                 numSky = 6000 + numSky;
 
+            var sand = new RectangleShape(new Vector2f(world.windowWidth, world.windowHeight/2))
+            {
+                Position = new Vector2f(0, world.windowHeight / 2),
+                FillColor = new Color(134, 117, 105)
+            };
+            window.Draw(sand);
+
+            Vertex[] sandd = new Vertex[4];
+            sandd[0].Position = new Vector2f(0, world.windowHeight/2);
+            sandd[0].Color = new Color(185, 175, 167);
+
+            sandd[1].Position = new Vector2f(world.windowWidth, world.windowHeight / 2);
+            sandd[1].Color = new Color(185, 175, 167);
+
+            sandd[2].Position = new Vector2f(world.windowWidth, world.windowHeight);
+            sandd[2].Color = new Color(134, 117, 105);
+
+            sandd[3].Position = new Vector2f(0, world.windowHeight);
+            sandd[3].Color = new Color(134, 117, 105);
 
 
             for (int x = 0; x < world.windowWidth; x++)
@@ -66,6 +85,8 @@ namespace Shuut
                     numSky = 0;
                 }
                 window.Draw(skyLine);
+
+
 
 
                 double rayAngle = angle + FOV / 2 - (x * FOV / world.windowWidth);
@@ -204,6 +225,10 @@ namespace Shuut
                         FillColor = new Color(255, 255, 255, (byte)(230 * dist / deph))
                     };
                     window.Draw(fog);
+
+
+
+
                 }
             }
         }
@@ -262,7 +287,7 @@ namespace Shuut
         }
         public void IncAngle()
         {
-            angle += 0.05;
+            angle += 0.07;
             if (angle >= Math.PI * 2)
             {
                 angle = 0;
@@ -270,7 +295,7 @@ namespace Shuut
         }
         public void DecAngle()
         {
-            angle -= 0.05;
+            angle -= 0.07;
             if (angle <= -Math.PI * 2)
             {
                 angle = 0;
@@ -313,10 +338,20 @@ namespace Shuut
         }
 
 
-        public void NewLocation()
+        public void NewLocation(World world)
         {
-            pX += 1;
-            pY += 1;
+            Random rand = new Random();
+
+            while (true)
+            {
+                pX = rand.Next(2, 98);
+                pY = rand.Next(2, 98);
+                if (world.map[(int)((int)pX * world.width + (int)pY)] != 1)
+                    return;
+            }
+
+            //pX += 1;
+            //pY += 1;
         }
 
     }

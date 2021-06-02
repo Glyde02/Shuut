@@ -49,7 +49,7 @@ namespace Shuut
                     double[] data = this.Decrypt(inputData);
                     if (data[3] != 0)
                     {
-                        camera.NewLocation();
+                        camera.NewLocation(world);
                     }
                     world.pX = data[0];
                     world.pY = data[1];

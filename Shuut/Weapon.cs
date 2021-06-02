@@ -39,5 +39,18 @@ namespace Shuut
             window.Draw(weapon);
         }
 
+        public void ShowFire(RenderWindow window)
+        {
+
+            Texture gun = new Texture("gun_fire.png");
+
+            Sprite weapon = new Sprite();
+            weapon.Texture = gun;
+
+            weapon.Position = new SFML.System.Vector2f(403, 245);
+
+            window.Draw(weapon);
+        }
+
     }
 }
