@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Shuut
 {
@@ -15,15 +16,22 @@ namespace Shuut
         private Camera camera;
 
         private Socket socket;
-        private string ipAdress = "127.0.0.1";
+        public string ipAdress = "127.0.0.1";
         private int port = 433;
 
         private List<Socket> listSockets = new List<Socket>();
         private Socket clientSocket;
         public Window window;
+        public ProgressBar progress;
+        private TextBlock text;
 
         byte[] inputData = new byte[8 * 4];
 
+        public TCP_Server(ProgressBar progress, TextBlock text)
+        {
+            this.progress = progress;
+            this.text = text;
+        }
 
         public override byte[] Get()
         {
@@ -83,6 +91,10 @@ namespace Shuut
             {
                 clientSocket = this.socket.Accept();
                 this.listSockets.Add(clientSocket);
+                text.Dispatcher.BeginInvoke(new Action(() => text.Text = "Сonnection succeed"));
+                progress.Dispatcher.BeginInvoke(new Action(() => progress.Visibility = System.Windows.Visibility.Hidden));
+                
+                this.isConnected = true;
 
 
                 Task.Run(() => Get());
@@ -95,6 +107,28 @@ namespace Shuut
             {
                 sock.Send(message);
             }
+        }
+        public List<string> GetIp()
+        {
+            List<string> adresses = new List<string>();
+
+            String host = System.Net.Dns.GetHostName();
+            // Получение ip-адреса.
+            //ipAdress = Dns.GetHostByName(host).AddressList[0].ToString();
+
+            
+            int i = 0;
+            while (i < Dns.GetHostEntry(host).AddressList.Length)
+            {
+                if (Dns.GetHostEntry(host).AddressList[i].AddressFamily.ToString() == "InterNetwork")
+                {
+                    ipAdress = Dns.GetHostEntry(host).AddressList[i].ToString();
+                    adresses.Add(ipAdress);
+                }
+                i++;
+            }
+
+            return adresses;
         }
     }
 }

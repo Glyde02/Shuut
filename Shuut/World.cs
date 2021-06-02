@@ -45,17 +45,10 @@ namespace Shuut
             this.width = w;
             this.height = h;
             this.map = new byte[w * h];
-            // Создание экземпляра класса StreamReader для чтения из файла.
-            // Оператор using обрамляет код, где используется StreamReader.
             try
             {
-                //byte[] map = new byte[800 * 600];
-
-
-                FileStream F = new FileStream("test.txt", FileMode.Open, FileAccess.ReadWrite);
+                FileStream F = new FileStream(name, FileMode.Open, FileAccess.ReadWrite);
                 F.Read(map, 0, w * h);
-                //this.width = 800;
-                //this.height = 600;
                 F.Close();
                 //map[(int)pX * width + (int)pY] = 2;
 

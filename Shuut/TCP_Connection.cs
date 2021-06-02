@@ -9,6 +9,8 @@ namespace Shuut
 {
     abstract class TCP_Connection
     {
+        public bool isConnected = false;
+
         abstract public void Init(World world, Camera camera);
 
         abstract public void Send(byte[] message);

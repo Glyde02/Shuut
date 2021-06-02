@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Shuut
 {
@@ -14,9 +15,18 @@ namespace Shuut
         static int port = 433;
         private Socket socket;
         private World world;
-        private Camera camera;    
+        private Camera camera;
+        private ProgressBar progress;
+        private TextBlock text;
 
         byte[] inputData = new byte[4*8];
+
+        public TCP_Client(string ip, ProgressBar progress, TextBlock text)
+        {
+            ipAdress = ip;
+            this.progress = progress;
+            this.text = text;
+        }
 
         public override byte[] Get()
         {
@@ -54,7 +64,10 @@ namespace Shuut
             IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(ipAdress), port);
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect(ipPoint);
-
+            text.Dispatcher.BeginInvoke(new Action(() => text.Text = "Сonnection succeed"));
+            progress.Dispatcher.BeginInvoke(new Action(() => progress.Visibility = System.Windows.Visibility.Hidden));
+            
+            
             Task.Run(() => Get());
         }
 
@@ -62,5 +75,6 @@ namespace Shuut
         {
             socket.Close();
         }
+
     }
 }

@@ -38,15 +38,15 @@ namespace Shuut
            {Keyboard.Key.W, false},
            {Keyboard.Key.Space, false}
         };
+        
         private bool isFocus = true;
+        private bool loadMap = false;
+        private bool loadTexture = false;
 
 
         public MainWindow()
         {
             InitializeComponent();
-
-
-
         }
 
 
@@ -199,8 +199,9 @@ namespace Shuut
         {
             try
             {
-                world.GetMap("test.txt", 100, 100);
-                btnPlay.IsEnabled = true;
+                world.GetMap("map.mp", 100, 100);
+                loadMap = true;
+                ButtonPressed();
             }
             catch
             {
@@ -210,16 +211,28 @@ namespace Shuut
 
         private void btnServer_Click(object sender, RoutedEventArgs e)
         {
-            connection = new TCP_Server();
-            connection.Init(world, camera);
+            txtIpClient.Visibility = Visibility.Hidden;
+            prgBarServer.Visibility = Visibility.Visible;
+            cmbIp.Items.Clear();
+            cmbIp.Visibility = Visibility.Visible;
+            connection = new TCP_Server(prgBarServer, txtConnectInfo);
+            foreach(string ip in (connection as TCP_Server).GetIp())
+            {
+                cmbIp.Items.Add(ip);
+            }
+            
             
         }
         private void btnClient_Click(object sender, RoutedEventArgs e)
         {
-            connection = new TCP_Client();
+            
+            connection = new TCP_Client(txtIpClient.Text, prgBarClient, txtConnectInfo);
             connection.Init(world, camera);
             camera.pX = 20;
             camera.angle = Math.PI;
+
+            
+
             //connection.Send(connection.Encrypt(new double[4] { 20, 20, 0, 0 }));
         }
 
@@ -239,7 +252,8 @@ namespace Shuut
                 hideElement(txtTexture);
 
             });
-
+            loadTexture = true;
+            ButtonPressed();
             
 
         }
@@ -255,6 +269,38 @@ namespace Shuut
             this.Dispatcher.Invoke((Action)(() => {
                 obj.Visibility = Visibility.Visible;
             }));
+        }
+
+        private void cmbIp_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (connection as TCP_Server).ipAdress = cmbIp.SelectedItem.ToString();
+            //(connection as TCP_Server).ipAdress = "127.0.0.1";
+            connection.Init(world, camera);
+        }
+
+        public void ButtonPressed()
+        {
+            if (!(bool)checkSingle.IsChecked)
+            {
+                if (loadMap && loadTexture)
+                    btnPlay.IsEnabled = true;
+            }
+            else
+                if (loadMap && loadTexture && txtConnectInfo.Text != "")
+                    btnPlay.IsEnabled = true;
+
+        }
+
+        private void prgBarServer_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (prgBarServer.Visibility == Visibility.Hidden)
+                ButtonPressed();
+        }
+
+        private void prgBarClient_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (prgBarClient.Visibility == Visibility.Hidden)
+                ButtonPressed();
         }
     }
 
