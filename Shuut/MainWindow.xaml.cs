@@ -299,9 +299,6 @@ namespace Shuut
 
         private void btnLoadTexture_Click(object sender, RoutedEventArgs e)
         {
-
-
-
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 showElement(prgBarTexture);
@@ -314,7 +311,6 @@ namespace Shuut
             });
             loadTexture = true;
             ButtonPressed();
-            
 
         }
 

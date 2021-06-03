@@ -14,9 +14,8 @@ namespace Shuut
         public double angle = 0;
         private double FOV = Math.PI / 3;
         public int deph = 200;
-        private double raySpeed = 0.05;
+        private double raySpeed = 0.15;
         private int numTexture = 1;
-        private int numSky = 1;
         Texture[] textu_wall;
         Texture[] textu_sky;
         Image img_wall = new Image("wall3.jpg");
@@ -56,19 +55,6 @@ namespace Shuut
                 FillColor = new Color(134, 117, 105)
             };
             window.Draw(sand);
-
-            Vertex[] sandd = new Vertex[4];
-            sandd[0].Position = new Vector2f(0, world.windowHeight/2);
-            sandd[0].Color = new Color(185, 175, 167);
-
-            sandd[1].Position = new Vector2f(world.windowWidth, world.windowHeight / 2);
-            sandd[1].Color = new Color(185, 175, 167);
-
-            sandd[2].Position = new Vector2f(world.windowWidth, world.windowHeight);
-            sandd[2].Color = new Color(134, 117, 105);
-
-            sandd[3].Position = new Vector2f(0, world.windowHeight);
-            sandd[3].Color = new Color(134, 117, 105);
 
 
             for (int x = 0; x < world.windowWidth; x++)
@@ -304,8 +290,8 @@ namespace Shuut
 
         public bool CheckShot(World world)
         {
-            double rayAngle = angle + FOV / 2 - ((world.windowWidth / 2) * FOV / world.windowWidth);
-            //double rayAngle = angle;
+            //double rayAngle = angle + FOV / 2 - ((world.windowWidth / 2) * FOV / world.windowWidth);
+            double rayAngle = angle;
             double rayX = Math.Cos(rayAngle);
             double rayY = Math.Sin(rayAngle);
 

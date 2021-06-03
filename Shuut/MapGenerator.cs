@@ -20,7 +20,7 @@ namespace Shuut
         {
             Objects elem = new Objects();
 
-            RenderWindow window = new RenderWindow(new SFML.Window.VideoMode((uint)w, (uint)h), "");
+            RenderWindow window = new RenderWindow(new SFML.Window.VideoMode((uint)w, (uint)h), "", Styles.Close);
             window.Closed += (_, __) => window.Close();
 
 

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Shuut"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="Shuut.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="588" Width="675"
+        Title="Shuut" Height="588" Width="675"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
          TextElement.FontWeight="Regular"
          TextElement.FontSize="13"
@@ -15,34 +15,38 @@
          Background="{DynamicResource MaterialDesignPaper}"
          FontFamily="{DynamicResource MaterialDesignFont}" ResizeMode="CanMinimize">
     <Grid x:Name="Window" Margin="0,0,0,-6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="66*"/>
             <RowDefinition Height="223*"/>
         </Grid.RowDefinitions>
         <TextBlock
           Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-          Text="Multiplayer" Margin="259,35,0,0" HorizontalAlignment="Left" Width="134" Height="32" VerticalAlignment="Top" />
+          Text="Multiplayer" Margin="184,35,0,0" HorizontalAlignment="Left" Width="134" Height="32" VerticalAlignment="Top" Grid.Column="1" />
         <TextBlock x:Name="txtTexture"
           Style="{StaticResource MaterialDesignBody2TextBlock}"
-          Text="Loading succesed" Margin="281,102,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="122" Visibility="Hidden" Grid.Row="1" />
+          Text="Loading succesed" Margin="206,102,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="122" Visibility="Hidden" Grid.Row="1" Grid.Column="1" />
         <ToggleButton x:Name="checkSingle"
           Style="{StaticResource MaterialDesignSwitchToggleButton}"
-          ToolTip="MaterialDesignSwitchToggleButton" Margin="390,33,0,0" HorizontalAlignment="Left" Width="38" Height="31" VerticalAlignment="Top" />
+          ToolTip="MaterialDesignSwitchToggleButton" Margin="315,33,0,0" HorizontalAlignment="Left" Width="38" Height="31" VerticalAlignment="Top" Grid.Column="1" />
         <ProgressBar x:Name="prgBarTexture"
-            IsIndeterminate="True" Visibility="Hidden" Margin="259,111,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="169" Height="4" VerticalAlignment="Top" />
+            IsIndeterminate="True" Visibility="Hidden" Margin="184,111,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="169" Height="4" VerticalAlignment="Top" Grid.Column="1" />
         <ProgressBar x:Name="prgBarClient"
           Style="{StaticResource MaterialDesignCircularProgressBar}"
           Value="0"
-          IsIndeterminate="True" HorizontalAlignment="Left" Margin="408,231,0,0" Width="20" Height="20" VerticalAlignment="Top" Grid.Row="1" Visibility="Hidden" IsVisibleChanged="prgBarClient_IsVisibleChanged" />
+          IsIndeterminate="True" HorizontalAlignment="Left" Margin="333,231,0,0" Width="20" Height="20" VerticalAlignment="Top" Grid.Row="1" Visibility="Hidden" IsVisibleChanged="prgBarClient_IsVisibleChanged" Grid.Column="1" />
         <ProgressBar x:Name="prgBarServer"
           Style="{StaticResource MaterialDesignCircularProgressBar}"
           Value="0"
-          IsIndeterminate="True" HorizontalAlignment="Left" Margin="408,182,0,0" Width="20" Height="20" VerticalAlignment="Top" Grid.Row="1" Visibility="Hidden" IsVisibleChanged="prgBarServer_IsVisibleChanged" />
+          IsIndeterminate="True" HorizontalAlignment="Left" Margin="333,182,0,0" Width="20" Height="20" VerticalAlignment="Top" Grid.Row="1" Visibility="Hidden" IsVisibleChanged="prgBarServer_IsVisibleChanged" Grid.Column="1" />
         <TextBlock
           Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-          Text="Start game as" Margin="259,152,0,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108" Grid.Row="1" />
-        <materialDesign:PackIcon Kind="Pistol" Margin="10,70,0,0" Height="114" Width="114" Grid.RowSpan="2" />
-        <materialDesign:PackIcon Kind="Pistol" Margin="529,70,0,0" Width="114" Height="114" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2" >
+          Text="Start game as" Margin="184,152,0,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="108" Grid.Row="1" Grid.Column="1" />
+        <materialDesign:PackIcon Kind="Pistol" Margin="10,70,0,0" Height="114" Width="114" Grid.RowSpan="2" Grid.ColumnSpan="2" />
+        <materialDesign:PackIcon Kind="Pistol" Margin="454,70,0,0" Width="114" Height="114" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2" Grid.Column="1" >
             <materialDesign:PackIcon.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="-1"/>
@@ -52,17 +56,17 @@
                 </TransformGroup>
             </materialDesign:PackIcon.RenderTransform>
         </materialDesign:PackIcon>
-        <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="259,365,0,0" VerticalAlignment="Top" Click="Button_Click" IsEnabled="False" Width="170" Grid.Row="1"/>
-        <Button x:Name="btnGenerateMap" Content="Generate map" HorizontalAlignment="Left" Margin="258,10,0,0" VerticalAlignment="Top" Click="btnGenerateMap_Click" Width="170" Grid.Row="1"/>
-        <Button x:Name="btnLoadMap" Content="Load map" HorizontalAlignment="Left" Margin="258,91,0,0" VerticalAlignment="Top" Width="170" Click="btnLoadMap_Click"/>
-        <Button x:Name="btnServer" Content="Server" Margin="259,176,0,0" VerticalAlignment="Top" Click="btnServer_Click" HorizontalAlignment="Left" Width="134" Grid.Row="1"/>
-        <Button x:Name="btnClient" Content="Client" Margin="259,225,0,0" VerticalAlignment="Top" Click="btnClient_Click" Cursor="Hand" HorizontalAlignment="Left" Width="134" Grid.Row="1"/>
-        <Button x:Name="btnLoadTexture" Content="Load texture" HorizontalAlignment="Left" Margin="258,61,0,0" VerticalAlignment="Top" Width="171" Cursor="Hand" Click="btnLoadTexture_Click" Grid.Row="1"/>
-        <materialDesign:PackIcon Kind="Connection" Margin="209,175,0,0" Height="35" Width="30" Grid.Row="1" />
-        <materialDesign:PackIcon Kind="AccountMultiple" Width="30" Height="30" Margin="209,34,0,0" />
-        <materialDesign:PackIcon Kind="EarthBox" Width="30" Height="31" Margin="209,91,0,0" />
-        <materialDesign:PackIcon Kind="MagazinePistol" Margin="547,303,0,0" Height="78" Width="78" Grid.Row="1" />
-        <materialDesign:PackIcon Kind="MagazinePistol" Margin="28,303,0,0" Height="78" Width="78" RenderTransformOrigin="0.5,0.5" Grid.Row="1" >
+        <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="184,365,0,0" VerticalAlignment="Top" Click="Button_Click" IsEnabled="False" Width="170" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="btnGenerateMap" Content="Generate map" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top" Click="btnGenerateMap_Click" Width="170" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="btnLoadMap" Content="Load map" HorizontalAlignment="Left" Margin="183,91,0,0" VerticalAlignment="Top" Width="170" Click="btnLoadMap_Click" Grid.Column="1"/>
+        <Button x:Name="btnServer" Content="Server" Margin="184,176,0,0" VerticalAlignment="Top" Click="btnServer_Click" HorizontalAlignment="Left" Width="134" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="btnClient" Content="Client" Margin="184,225,0,0" VerticalAlignment="Top" Click="btnClient_Click" Cursor="Hand" HorizontalAlignment="Left" Width="134" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="btnLoadTexture" Content="Load texture" HorizontalAlignment="Left" Margin="183,61,0,0" VerticalAlignment="Top" Width="171" Cursor="Hand" Click="btnLoadTexture_Click" Grid.Row="1" Grid.Column="1"/>
+        <materialDesign:PackIcon Kind="Connection" Margin="134,175,0,0" Height="35" Width="30" Grid.Row="1" Grid.Column="1" />
+        <materialDesign:PackIcon Kind="AccountMultiple" Width="30" Height="30" Margin="134,34,0,0" Grid.Column="1" />
+        <materialDesign:PackIcon Kind="EarthBox" Width="30" Height="31" Margin="134,91,0,0" Grid.Column="1" />
+        <materialDesign:PackIcon Kind="MagazinePistol" Margin="472,303,0,0" Height="78" Width="78" Grid.Row="1" Grid.Column="1" />
+        <materialDesign:PackIcon Kind="MagazinePistol" Margin="28,303,0,0" Height="78" Width="78" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="2" >
             <materialDesign:PackIcon.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="-1"/>
@@ -72,19 +76,19 @@
                 </TransformGroup>
             </materialDesign:PackIcon.RenderTransform>
         </materialDesign:PackIcon>
-        <materialDesign:PackIcon Kind="Bullet" Margin="529,120,0,0" Width="114" Height="114" Grid.Row="1" />
-        <materialDesign:PackIcon Kind="Bullet" Margin="10,120,0,0" Width="114" Height="114" Grid.Row="1" />
-        <materialDesign:PackIcon Kind="Ip" Margin="209,311,0,0" Grid.Row="1" Width="30" Height="31" />
+        <materialDesign:PackIcon Kind="Bullet" Margin="454,120,0,0" Width="114" Height="114" Grid.Row="1" Grid.Column="1" />
+        <materialDesign:PackIcon Kind="Bullet" Margin="10,120,0,0" Width="114" Height="114" Grid.Row="1" Grid.ColumnSpan="2" />
+        <materialDesign:PackIcon Kind="Ip" Margin="134,311,0,0" Grid.Row="1" Width="30" Height="31" Grid.Column="1" />
         <ComboBox x:Name="cmbIp"
-        materialDesign:HintAssist.Hint="IP" Margin="258,314,247,0" Grid.Row="1" VerticalAlignment="Top" Height="25" SelectionChanged="cmbIp_SelectionChanged" Visibility="Hidden">
+        materialDesign:HintAssist.Hint="IP" Margin="183,314,247,0" Grid.Row="1" VerticalAlignment="Top" Height="25" SelectionChanged="cmbIp_SelectionChanged" Visibility="Hidden" Grid.Column="1">
         </ComboBox>
         <TextBox x:Name="txtIpClient"
           materialDesign:HintAssist.Hint="Ip Adress"
           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-          VerticalAlignment="Top" Margin="259,303,246,0" Grid.Row="1"
+          VerticalAlignment="Top" Margin="184,303,246,0" Grid.Row="1" Grid.Column="1"
          />
         <TextBlock x:Name="txtConnectInfo"
             Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-            Text="" Margin="259,278,0,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="170" Grid.Row="1" />
+            Text="" Margin="184,278,0,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="170" Grid.Row="1" Grid.Column="1" />
     </Grid>
 </Window>
