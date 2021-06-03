@@ -52,7 +52,6 @@ namespace Shuut
 
         public override void Send(byte[] message)
         {
-
             socket.Send(message);
         }
 

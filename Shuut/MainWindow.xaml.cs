@@ -30,6 +30,9 @@ namespace Shuut
         private Map map = new Map();
         private Weapon weapon = new Weapon();
         private TCP_Connection connection;
+        private Sound step;
+        private Sound shot;
+        private Vector2f mouse_dot;
         private Dictionary<Keyboard.Key, bool> keysArePressed = new Dictionary<Keyboard.Key, bool>
         {
            {Keyboard.Key.A, false},
@@ -43,46 +46,35 @@ namespace Shuut
         private bool loadMap = false;
         private bool loadTexture = false;
 
-
         public MainWindow()
         {
             InitializeComponent();
         }
 
-
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-
-
-
-            //var sound = new Sound(GenerateSineWave(frequency: 440.0, volume: .25, seconds: 1));
             ContextSettings settings = new ContextSettings();
-
             settings.AntialiasingLevel = 8;
-
-            
-            
-
-
-            window = new RenderWindow(new SFML.Window.VideoMode((uint)world.windowWidth, (uint)world.windowHeight), "SFML running in .NET Core", Styles.Default, settings);
-
+            window = new RenderWindow(new SFML.Window.VideoMode((uint)world.windowWidth, (uint)world.windowHeight), "Shuut", Styles.Default, settings);
             window.Closed += (_, __) => window.Close();
-            //window.KeyPressed += new EventHandler<SFML.Window.KeyEventArgs>(Keyboard);
-            //window.KeyPressed += OnKeyPressed;
             window.KeyReleased += OnKeyReleased;
             window.LostFocus += LostFocus_;
             window.GainedFocus += GainedFocus_;          
 
-            //sound.Play();
-
             bool isShot = false;
             bool firsAnimation = false;
+
+            Clock clock = new Clock();
+            int loop = 0;
+            bool isStep = false;
 
 
             while (window.IsOpen)
             {
+                int tm = clock.ElapsedTime.AsMilliseconds();
+                loop += tm;
+                clock.Restart();
+
                 window.DispatchEvents();
 
 
@@ -90,19 +82,22 @@ namespace Shuut
                 {
                     if (pressedLeft())
                     {
+                        isStep = true;
                         camera.Left(world);
-
                     }
                     if (pressedRight())
                     {
+                        isStep = true;
                         camera.Right(world);
                     }
                     if (pressedForward())
                     {
+                        isStep = true;
                         camera.Forward(world);
                     }
                     if (pressedBackward())
                     {
+                        isStep = true;
                         camera.Backward(world);
                     }
                     if (pressedInc())
@@ -116,12 +111,19 @@ namespace Shuut
                     if (pressedShot() &&
                         keysArePressed[Keyboard.Key.Space] == false)
                     {
+                        shot.Play();
                         keysArePressed[Keyboard.Key.Space] = true;
                         firsAnimation = true;
                         if (camera.CheckShot(world))
                         {
                             isShot = true;
                         }
+                    }
+
+                    if (isStep && loop > 600)
+                    {
+                        step.Play();
+                        loop = 0;
                     }
                 }
 
@@ -158,7 +160,13 @@ namespace Shuut
                 weapon.ShowWeapon(window);
 
                 window.Display();
+                isStep = false;
             }
+        }
+
+        private void sound_shot(RenderWindow window)
+        {
+
         }
 
         private bool pressedLeft()
@@ -294,11 +302,17 @@ namespace Shuut
             {
                 MessageBox.Show("Error IP!");
             }
-            //connection.Send(connection.Encrypt(new double[4] { 20, 20, 0, 0 }));
         }
 
         private void btnLoadTexture_Click(object sender, RoutedEventArgs e)
         {
+            SoundBuffer buffer1 = new SoundBuffer("step.wav");
+            step = new Sound(buffer1);
+
+            SoundBuffer buffer2 = new SoundBuffer("shot.wav");
+            shot = new Sound(buffer2);
+
+
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 showElement(prgBarTexture);
@@ -330,7 +344,6 @@ namespace Shuut
         private void cmbIp_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             (connection as TCP_Server).ipAdress = cmbIp.SelectedItem.ToString();
-            //(connection as TCP_Server).ipAdress = "127.0.0.1";
             connection.Init(world, camera);
         }
 
