@@ -21,7 +21,6 @@ namespace Shuut
 
         private List<Socket> listSockets = new List<Socket>();
         private Socket clientSocket;
-        public Window window;
         public ProgressBar progress;
         private TextBlock text;
 

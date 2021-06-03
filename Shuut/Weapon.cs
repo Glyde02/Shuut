@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -10,6 +11,18 @@ namespace Shuut
 {
     class Weapon
     {
+        Sound shot;
+        public Weapon()
+        {
+            SoundBuffer buffer2 = new SoundBuffer("shot.wav");
+            shot = new Sound(buffer2);
+        }
+
+        public void ShotPlay()
+        {
+            shot.Play();
+        }
+
         public void ShowWeapon(RenderWindow window)
         {
             RectangleShape horz = new RectangleShape(new SFML.System.Vector2f(20, 2))

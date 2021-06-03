@@ -9,6 +9,13 @@ using System.Windows;
 
 namespace Shuut
 {
+    struct player
+    {
+        double pX;
+        double pY;
+        double angle;
+    };
+
     class World
     {
         //public byte[] map = new byte[] {    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -36,8 +43,12 @@ namespace Shuut
 
         public int width, height;
         public byte[] map;
+        public List<player> players = new List<player>();
         public int windowWidth = 1000, windowHeight = 800;
-        public double pX = 15, pY=10, angle=0;
+
+
+
+        //public double pX = 15, pY=10, angle=0;
 
 
         public void GetMap(string name, int w, int h)

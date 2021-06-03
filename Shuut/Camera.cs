@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 
@@ -21,6 +22,13 @@ namespace Shuut
         Image img_wall = new Image("wall3.jpg");
         Image img_sky = new Image("sky2.png");
         Texture pll = new Texture("player2.png");
+        Sound step;
+
+        public Camera()
+        {
+            SoundBuffer buffer1 = new SoundBuffer("step.wav");
+            step = new Sound(buffer1);
+        }
 
         public void LoadTexture()
         {
@@ -323,6 +331,10 @@ namespace Shuut
             return hit ? true : false;
         }
 
+        public void StepPlay()
+        {
+            step.Play();
+        }
 
         public void NewLocation(World world)
         {
@@ -339,6 +351,8 @@ namespace Shuut
             //pX += 1;
             //pY += 1;
         }
+
+
 
     }
 

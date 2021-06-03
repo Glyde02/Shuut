@@ -111,7 +111,7 @@ namespace Shuut
                     if (pressedShot() &&
                         keysArePressed[Keyboard.Key.Space] == false)
                     {
-                        shot.Play();
+                        weapon.ShotPlay();
                         keysArePressed[Keyboard.Key.Space] = true;
                         firsAnimation = true;
                         if (camera.CheckShot(world))
@@ -122,7 +122,7 @@ namespace Shuut
 
                     if (isStep && loop > 600)
                     {
-                        step.Play();
+                        camera.StepPlay();
                         loop = 0;
                     }
                 }
@@ -162,11 +162,6 @@ namespace Shuut
                 window.Display();
                 isStep = false;
             }
-        }
-
-        private void sound_shot(RenderWindow window)
-        {
-
         }
 
         private bool pressedLeft()
@@ -306,13 +301,6 @@ namespace Shuut
 
         private void btnLoadTexture_Click(object sender, RoutedEventArgs e)
         {
-            SoundBuffer buffer1 = new SoundBuffer("step.wav");
-            step = new Sound(buffer1);
-
-            SoundBuffer buffer2 = new SoundBuffer("shot.wav");
-            shot = new Sound(buffer2);
-
-
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 showElement(prgBarTexture);
