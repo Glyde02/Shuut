@@ -19,7 +19,7 @@ namespace Shuut
         private ProgressBar progress;
         private TextBlock text;
 
-        byte[] inputData = new byte[4*8];
+        byte[] inputData = new byte[6*8];
 
         public TCP_Client(string ip, ProgressBar progress, TextBlock text)
         {
@@ -32,22 +32,33 @@ namespace Shuut
         {
             while (true)
             {
-                StringBuilder inputMessage = new StringBuilder();
                 int bytesRead = 0;
-
                 bytesRead = socket.Receive(inputData);
+                
 
-                world.map[(int)world.pX * world.width + (int)world.pY] = 0;
                 double[] data = this.Decrypt(inputData);
-                if (data[3] != 0)
+                if (camera.number != data[4])
+                {
+                    world.ClearPlayer(data[4]);
+                    world.SetNewData(data[0], data[1], data[2], data[4]);
+                }
+
+                if (data[3] != 0 && camera.number == data[5])
                 {
                     camera.NewLocation(world);
                 }
-                world.pX = data[0];
-                world.pY = data[1];
-                world.angle = data[2];
-                world.map[(int)world.pX * world.width + (int)world.pY] = 2;
+
+                
             }
+        }
+
+        public void GetOne()
+        {
+            int bytesRead = 0;
+            bytesRead = socket.Receive(inputData);
+            double[] data = this.Decrypt(inputData);
+            camera.number = data[5];
+            world.ClearPlayer(0);
         }
 
         public override void Send(byte[] message)
@@ -63,6 +74,8 @@ namespace Shuut
             IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(ipAdress), port);
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect(ipPoint);
+            GetOne();
+            //GetOne();
             text.Dispatcher.BeginInvoke(new Action(() => text.Text = "Сonnection succeed"));
             progress.Dispatcher.BeginInvoke(new Action(() => progress.Visibility = System.Windows.Visibility.Hidden));
             

@@ -20,10 +20,10 @@ namespace Shuut
         public double[] Decrypt(byte[] input)
         {
 
-            double[] result = new double[4];
+            double[] result = new double[6];
             int buffInd = 0;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 byte[] buffnumb = new byte[8];
                 for (int k = 0; k < 8; k++)
@@ -41,7 +41,7 @@ namespace Shuut
         public byte[] Encrypt(double[] input)
         {
 
-            byte[] result = new byte[4*8];
+            byte[] result = new byte[6*8];
             int resultInd = 0;
 
             foreach (double i in input)

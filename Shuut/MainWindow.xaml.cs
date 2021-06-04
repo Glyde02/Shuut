@@ -68,6 +68,8 @@ namespace Shuut
             int loop = 0;
             bool isStep = false;
 
+            double num = 0;
+
 
             while (window.IsOpen)
             {
@@ -114,7 +116,7 @@ namespace Shuut
                         weapon.ShotPlay();
                         keysArePressed[Keyboard.Key.Space] = true;
                         firsAnimation = true;
-                        if (camera.CheckShot(world))
+                        if (camera.CheckShot(world, ref num))
                         {
                             isShot = true;
                         }
@@ -135,9 +137,9 @@ namespace Shuut
                 else
                 {
                     if (!isShot)
-                        connection.Send(connection.Encrypt(new double[4] { camera.pX, camera.pY, camera.angle, 0 }));
+                        connection.Send(connection.Encrypt(new double[6] { camera.pX, camera.pY, camera.angle, 0, camera.number, 0 }));
                     else
-                        connection.Send(connection.Encrypt(new double[4] { camera.pX, camera.pY, camera.angle, 1 }));
+                        connection.Send(connection.Encrypt(new double[6] { camera.pX, camera.pY, camera.angle, 1, camera.number, num}));
                 }
                 isShot = false;
 

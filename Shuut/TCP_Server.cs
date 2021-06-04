@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -20,11 +21,13 @@ namespace Shuut
         private int port = 433;
 
         private List<Socket> listSockets = new List<Socket>();
-        private Socket clientSocket;
+        //private Socket clientSocket;
         public ProgressBar progress;
         private TextBlock text;
 
-        byte[] inputData = new byte[8 * 4];
+        private double number = 1;
+
+        //byte[] inputData = new byte[8 * 6];
 
         public TCP_Server(ProgressBar progress, TextBlock text)
         {
@@ -34,39 +37,47 @@ namespace Shuut
 
         public override byte[] Get()
         {
+            return new byte[1];
+        }
+
+        public byte[] Get(Socket client)
+        {
             while (true)
             {
-                StringBuilder inputMessage = new StringBuilder();
                 int bytesRead = 0;
-                
 
-                bytesRead = clientSocket.Receive(inputData);
+                byte[] inputData = new byte[6 * 8];
+                bytesRead = client.Receive(inputData);
 
                 if (inputData != null)
                 {
-                    world.map[(int)world.pX * world.width + (int)world.pY] = 0;
                     double[] data = this.Decrypt(inputData);
-                    if (data[3] != 0)
+                    if (camera.number != data[4])
+                    {
+                        world.ClearPlayer(data[4]);
+                        world.SetNewData(data[0], data[1], data[2], data[4]);
+                    }
+
+                    if (data[3] != 0 && camera.number == data[5])
                     {
                         camera.NewLocation(world);
                     }
-                    world.pX = data[0];
-                    world.pY = data[1];
-                    world.angle = data[2];
-                    world.map[(int)(world.pX) * world.width + (int)world.pY] = 2;
+
+                    SendMessageToAll(client, inputData);
+
                     //SendMessageToAll(clientSocket);
                 }
                 
             }
         }
 
-        public void SendMessageToAll(Socket clientSocket)
+        public void SendMessageToAll(Socket clientSocket, byte[] input)
         {
             foreach (Socket someSoket in listSockets)
             {
                 if (clientSocket != someSoket)
                 {
-                    someSoket.Send(inputData);
+                    someSoket.Send(input);
                 }
             }
         }
@@ -75,6 +86,7 @@ namespace Shuut
         {
             this.world = world;
             this.camera = camera;
+            camera.number = 0;
 
             IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(ipAdress), port);
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -88,15 +100,29 @@ namespace Shuut
         {
             while (true)
             {
-                clientSocket = this.socket.Accept();
+                Socket clientSocket = this.socket.Accept();
                 this.listSockets.Add(clientSocket);
+                clientSocket.Send(Encrypt(new double[6] { 0, 0, 0, 0, 0, number }));
+
+                if (number > 1)
+                {
+                    byte[] inputData = Encrypt(new double[6] { 0, 0, 0, 0, number, 0 });
+                    SendMessageToAll(clientSocket, inputData);
+                }
+
+                world.ClearPlayer(number);
+                number++;
                 text.Dispatcher.BeginInvoke(new Action(() => text.Text = "Сonnection succeed"));
                 progress.Dispatcher.BeginInvoke(new Action(() => progress.Visibility = System.Windows.Visibility.Hidden));
                 
                 this.isConnected = true;
 
+                System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    Get(clientSocket);
 
-                Task.Run(() => Get());
+                });
+                //Task.Run(() => Get(clientSocket));
             }
         }
 

@@ -24,6 +24,8 @@ namespace Shuut
         Texture pll = new Texture("player2.png");
         Sound step;
 
+        public double number;
+
         public Camera()
         {
             SoundBuffer buffer1 = new SoundBuffer("step.wav");
@@ -296,7 +298,7 @@ namespace Shuut
             }
         }
 
-        public bool CheckShot(World world)
+        public bool CheckShot(World world, ref double num)
         {
             //double rayAngle = angle + FOV / 2 - ((world.windowWidth / 2) * FOV / world.windowWidth);
             double rayAngle = angle;
@@ -322,10 +324,20 @@ namespace Shuut
                 {
                     dist = deph;
                 }
-                else if (world.map[(int)((int)tx * world.width + (int)ty)] == 2)
+                else
                 {
-                    hit = true;
+                    num = world.CheckCoordinate(tx, ty);
+                    if (num != -1)
+                    {
+                        hit = true;
+                        return hit;
+                    }
                 }
+                //if (world.map[(int)((int)tx * world.width + (int)ty)] == 2)
+                //{
+                //    num = world.CheckCoordinate(tx, ty);
+                //    hit = true;
+                //}
 
             }
             return hit ? true : false;
